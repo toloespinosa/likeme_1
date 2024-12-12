@@ -13,12 +13,14 @@ function App() {
 
   const getPosts = async () => {
     const { data: posts } = await axios.get(urlBaseServer + "/posts");
-    setPosts([...posts]);
+    setPosts([...posts].sort((a, b) => a.id - b.id)); // Ordena por ID
   };
+  
 
   const agregarPost = async () => {
     const post = { titulo, img: imgSrc, descripcion };
     await axios.post(urlBaseServer + "/posts", post);
+    
     getPosts();
   };
 
@@ -51,9 +53,9 @@ function App() {
           />
         </div>
         <div className="col-12 col-sm-8 px-5 row posts align-items-start">
-          {posts.map((post, i) => (
+          {posts.map((post) => (
             <Post
-              key={i}
+              key={post.id}
               post={post}
               like={like}
               eliminarPost={eliminarPost}
